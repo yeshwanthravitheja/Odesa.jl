@@ -2,7 +2,7 @@
   Odesa.jl: Julia implementation of Feast/fully connected ODESA
 </h1>
 
-
+By @yeshwanthravitheja
 
 
 <p align="center">
