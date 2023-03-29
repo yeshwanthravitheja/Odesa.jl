@@ -1,5 +1,5 @@
 <h1 align="center">
-  Odesa.jl: Julia implementation of ODESA
+  Odesa.jl: Julia implementation of Feast/fully connected ODESA
 </h1>
 
 
