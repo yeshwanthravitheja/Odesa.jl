@@ -15,15 +15,8 @@ By [yeshwanthravitheja](https://github.com/yeshwanthravitheja)
 </p>
 
 
-<!---
-For this to work (direct to build status of this repository fork), you would need to fiddle around with manually setting up actions.
 
-![Build status](https://github.com/yeshwanthravitheja/julia_odesa/actions/workflows/ci.yml/badge.svg](https://github.com/yeshwanthravitheja/julia_odesa/actions/workflows/ci.yml/badge.svg)
---->
-![https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg](https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg)
-
-
-To Install
+To Install Russell's fork. 
 
 ```
 ] add "https://github.com/russelljjarvis/Odesa.jl-1"
@@ -45,22 +38,18 @@ Pkg.add(url="https://github.com/russelljjarvis/Odesa.jl-1")
   <summary>Install the Julia module</summary>
     
 This is not yet an official package, so the package would need to be added in developer mode. The short way to do this is as follows:
-```
-import Pkg
-Pkg.add(url="https://github.com/russelljjarvis/Odesa.jl.git")
-```
-or Original:
+To install the oiginal repo. 
 ```  
-Pkg.add(url="https://github.com/yeshwanthravitheja/julia_odesa.git")
+Pkg.add(url="https://github.com/yeshwanthravitheja/Odesa.jl.git")
  ```
 or 
 ```
   
-] add https://github.com/russelljjarvis/Odesa.jl
+] add https://github.com/yeshwanthravitheja/Odesa.jl.git
 ```
 The long way invovles:
 ```
-git clone https://github.com/russelljjarvis/Odesa.jl
+git clone https://github.com/yeshwanthravitheja/Odesa.jl
 ```
 
 ```
