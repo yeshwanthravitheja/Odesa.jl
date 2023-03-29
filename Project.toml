@@ -1,9 +1,10 @@
 uuid = "583183d5-eda1-44d4-86ff-e0b9d76dbfc4"
-name = "Odesa"
+name = "Odessa"
 authors = ["Y Bethi y.bethi@westernsydney.edu.au"]
 version = "0.1.0"
 
 [deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
