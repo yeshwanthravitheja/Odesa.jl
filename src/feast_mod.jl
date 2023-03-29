@@ -327,19 +327,90 @@ module Feast
             # If there is a winner, then save the delta and delta thresh which will be used later to reward 
             layer_delta = view(layer.delta, :, winnerNeuron)
             layer_delta .= view(layer.event_context, :) .-  view(layer.w, :, winnerNeuron)
-            layer.deltaThresh[winnerNeuron] = layer.deltaThresh[winnerNeuron] - layer.dot_prod[winnerNeuron]
+            layer.deltaThresh[winnerNeuron] =  layer.dot_prod[winnerNeuron] - layer.thresh[winnerNeuron]
             # Add this winning to the neuron's firing activity
-            add_trace_event(layer, winnerNeuron, ts)
+            # add_trace_event(layer, winnerNeuron, ts)
             # Reward the winner neuron. 
             reward(layer, winnerNeuron)
 
         else
             # If there is no winner save the time when there was no winner
-            layer.noWinnerTrace = ts
+            # layer.noWinnerTrace = ts
             #Punish all the neurons
             punish(layer)
 
         end
+
+        
+        return winnerNeuron
+
+    end
+
+    function infer(layer::FC, x::Int32, y::Int32, ts::Float32)
+        """
+        Key forward function of the layer. 
+            Find the normalized context
+            Perform dotproduct
+            Find winner neuron
+            Save the delta and deltaThresh
+        """
+        # Check if it is a valid input spike
+        if x < 1 || y < 1 
+            # Negative winner value indicates no winner. The same convention is used everywhere
+            return -1
+        end
+        # Add event to the timestamp and polarity stores
+        add_event(layer, x, y, ts)
+
+        # Compute the event context
+        compute_context(layer, ts)
+        
+        # Find the dotproduct
+
+        # layer.dot_prod .= layer.w  vec(layer.event_context)
+        # a = copy(layer.w')
+        # b = zeros(Float32, 15, 1)
+        # @btime mul!($b,$layer.w',vec($layer.event_context))
+        # @btime mul!($layer.dot_prod,$layer.w',$layer.event_context[:])
+        mul!(layer.dot_prod, layer.w', view(layer.event_context, :))
+        # @btime $layer.dot_prod .= $layer.w' * vec($layer.event_context)
+
+        # dot_prod = layer.w * reshape(layer.event_context, :, 1)
+        # @btime all($layer.dot_prod < $layer.thresh)
+        ##TODO For Loop
+        winnerNeuron::Int32 = -1
+        max_value::Float32 = 0.0
+
+        # Find the neuron with highest dot product among the neurons whose dotproduct has
+        # crossed their thresholds.
+        # Threads.@threads
+        @inbounds for neuron = 1:layer.nNeurons
+            if layer.dot_prod[neuron] >= layer.thresh[neuron]
+                if layer.dot_prod[neuron] > max_value
+                    winnerNeuron = neuron
+                    max_value = layer.dot_prod[neuron]
+                end
+            end
+        end
+
+
+        # if winnerNeuron > -1
+        #     # If there is a winner, then save the delta and delta thresh which will be used later to reward 
+        #     layer_delta = view(layer.delta, :, winnerNeuron)
+        #     layer_delta .= view(layer.event_context, :) .-  view(layer.w, :, winnerNeuron)
+        #     layer.deltaThresh[winnerNeuron] =  layer.dot_prod[winnerNeuron] - layer.thresh[winnerNeuron]
+        #     # Add this winning to the neuron's firing activity
+        #     # add_trace_event(layer, winnerNeuron, ts)
+        #     # Reward the winner neuron. 
+        #     reward(layer, winnerNeuron)
+
+        # else
+        #     # If there is no winner save the time when there was no winner
+        #     # layer.noWinnerTrace = ts
+        #     #Punish all the neurons
+        #     punish(layer)
+
+        # end
 
         
         return winnerNeuron

@@ -327,7 +327,7 @@ module FullyConnected
             # If there is a winner, then save the delta and delta thresh which will be used later to reward 
             layer_delta = view(layer.delta, :, winnerNeuron)
             layer_delta .= view(layer.event_context, :) .-  view(layer.w, :, winnerNeuron)
-            layer.deltaThresh[winnerNeuron] = layer.deltaThresh[winnerNeuron] - layer.dot_prod[winnerNeuron]
+            layer.deltaThresh[winnerNeuron] = layer.dot_prod[winnerNeuron] - layer.thresh[winnerNeuron]
             # Add this winning to the neuron's firing activity
             add_trace_event(layer, winnerNeuron, ts)
         else
