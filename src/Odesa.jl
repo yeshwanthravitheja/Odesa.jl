@@ -4,7 +4,7 @@ using LinearAlgebra
 using BenchmarkTools
 using Traceur
 using Random
-using ProgressBars
+using ProgressMeters
 using Dates
 using JLD
 using TimerOutputs
@@ -15,5 +15,4 @@ include("feast_mod.jl")
 import .Feast
 import .FullyConnected
 using Statistics
-using Dates
 end
