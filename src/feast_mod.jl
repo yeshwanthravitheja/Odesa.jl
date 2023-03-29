@@ -4,7 +4,7 @@
 # https://ieeexplore.ieee.org/document/9864144
 module Feast
     using LinearAlgebra
-    using JLD
+    using JLD2
     using Revise
     using SparseArrays
     using Traceur
