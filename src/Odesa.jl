@@ -6,7 +6,6 @@ using Traceur
 using Random
 using ProgressMeter
 using JLD2
-using TimerOutputs
 # using Threads
 
 include("fc_odesa_mod.jl")
