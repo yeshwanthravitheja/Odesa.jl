@@ -12,8 +12,8 @@ module Feast
         #TODO:  Discuss with @Russell regd using Float32 or Float64 
 
         #Layer input dimensions #TODO: This need not be stored. It is useless for FC
-        in_rows::T # Int32
-        in_cols::T #Int32
+        in_rows::Uint{P} # Int32
+        in_cols::Uint{P} #Int32
         # Flattened input dimensions
         context_size::Uint{P} #$Int32
         #Hyper Parameters for learning
@@ -191,7 +191,7 @@ module Feast
 
         # Record the attention signal for each neuron
         # Threads.@threads for n::Int32 = 1:layer.nNeurons
-        for n::Int32 = 1:layer.nNeurons
+        @inbounds for n in 1:layer.nNeurons
             #TODO: Recording the attention signal can be done to each neuron parallely
             record_individual_neuron(layer,n,ts,punishFlag)
         end
@@ -265,7 +265,9 @@ module Feast
 
         # Find the neuron with highest dot product among the neurons whose dotproduct has
         # crossed their thresholds.
-        # Threads.@threads
+
+        # 1D cuda kernel
+
         @inbounds for neuron = 1:layer.nNeurons
             if layer.dot_prod[neuron] >= layer.thresh[neuron]
                 if layer.dot_prod[neuron] > max_value
