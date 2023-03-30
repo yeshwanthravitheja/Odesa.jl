@@ -15,10 +15,9 @@
 [![CI](https://github.com/russelljjarvis/Odesa.jl-1/actions/workflows/ci.yml/badge.svg)](https://github.com/russelljjarvis/Odesa.jl-1/actions/workflows/ci.yml)
 
 
-![Uploading image.png…]()
 
+![image](https://user-images.githubusercontent.com/7786645/228737546-f2547327-feed-43e8-ad3e-8d000cfd1b71.png)
 
-By [yeshwanthravitheja](https://github.com/yeshwanthravitheja)
 
 
 <!---
