@@ -27,7 +27,6 @@ For this to work (direct to build status of this repository fork), you would nee
 
 
 --->
-![https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg](https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg)
 
 
 To Install
