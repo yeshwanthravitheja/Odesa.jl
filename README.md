@@ -56,20 +56,20 @@ Works fine with 16Bit Floats (see image below).
 This is not yet an official package, so the package would need to be added in developer mode. The short way to do this is as follows:
 ```
 import Pkg
-Pkg.add(url="https://github.com/russelljjarvis/Odesa.jl.git")
+Pkg.add(url="https://github.com/russelljjarvis/Odesa.jl-1.git")
 ```
 or Original:
 ```  
-Pkg.add(url="https://github.com/yeshwanthravitheja/julia_odesa.git")
+Pkg.add(url="https://github.com/yeshwanthravitheja/Odesa.jl-1.git")
  ```
 or 
 ```
   
-] add https://github.com/russelljjarvis/Odesa.jl
+] add https://github.com/russelljjarvis/Odesa.jl-1
 ```
 The long way invovles:
 ```
-git clone https://github.com/russelljjarvis/Odesa.jl
+git clone https://github.com/russelljjarvis/Odesa.jl-1
 ```
 
 ```
