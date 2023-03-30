@@ -42,8 +42,12 @@ end
 distances = collect_distances(feast_layer,nodes,times)
 @assert length(distances) !=0
 @assert mean(distances) !=0
+
+
+"""
+Get time surfaces for plotting.
+"""
 function get_ts(nodes,times)
-    #num_spikes = length(nodes)
     # The temporal resolution of the final timesurface
     dt = 10
     num_neurons = Int(length(unique(nodes)))+1#int(df.max(axis=0)['x1'])
