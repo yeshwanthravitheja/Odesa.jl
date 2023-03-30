@@ -9,8 +9,6 @@ module Feast
     abstract type FullyConnectedLayer end
 
     mutable struct FC{T,S,Q,R,P} <: FullyConnectedLayer
-        #TODO:  Discuss with @Russell regd using Float32 or Float64 
-
         #Layer input dimensions #TODO: This need not be stored. It is useless for FC
         in_rows::T # Int32
         in_cols::T #Int32
