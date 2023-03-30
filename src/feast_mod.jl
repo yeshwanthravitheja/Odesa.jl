@@ -71,10 +71,6 @@ module Feast
         ##
         # Constructor function.
         ##
-
-
-        #convert_precision(x,Int<:precision<:Real) = eval("convert(x,Float{$precision})")
-        #convert_precision(x,precision<:Int) = eval("convert(x,Int{$precision})")
         function FC(
             precision,
             input_rows,
@@ -216,8 +212,7 @@ module Feast
 
         return nothing
     end
-
-    function reward(layer::FC, neuron::Real)
+    function reward(layer::FC, neuron::Integer)
         """
         Reward individual neuron 
         """
@@ -242,11 +237,11 @@ module Feast
 
         return nothing
     end
+    """
+    Compute the normalized event context at time ts based on the timestamp and polarity stores. 
+    """
 
     function compute_context(layer::FC,ts)
-        """
-        Compute the normalized event context at time ts based on the timestamp and polarity stores. 
-        """
         layer.event_context .=
             layer.polarity .*
             exp.(
@@ -257,15 +252,15 @@ module Feast
  
         return nothing
     end
-
-    function forward(layer::FC, x, y, ts)
-        """
-        Key forward function of the layer. 
-            Find the normalized context
-            Perform dotproduct
-            Find winner neuron
-            Save the delta and deltaThresh
-        """
+    """
+    Key forward function of the layer. 
+        Find the normalized context
+        Perform dotproduct
+        Find winner neuron
+        Save the delta and deltaThresh
+    """
+    function forward(layer::FC, x::Integer, y::Integer, ts::AbstractFloat)
+    
         # Check if it is a valid input spike
         if x < 1 || y < 1 
             # Negative winner value indicates no winner. The same convention is used everywhere
@@ -315,8 +310,9 @@ module Feast
         return winnerNeuron
 
     end
+    #{A<:AbstractFloat, B<:Integer}
 
-    function infer(layer::FC, x, y, ts)
+    function infer(layer::FC, x::Integer, y::Integer, ts::AbstractFloat)
         """
         Key forward function of the layer. 
             Find the normalized context
