@@ -2,8 +2,6 @@
   Odesa.jl: Julia implementation of Feast/fully connected ODESA
 </h1>
 
-By [yeshwanthravitheja](https://github.com/yeshwanthravitheja)
-
 
 <p align="center">
   <a href="#Getting-Started">Getting Started</a> •
@@ -14,11 +12,17 @@ By [yeshwanthravitheja](https://github.com/yeshwanthravitheja)
   
 </p>
 
+[![CI](https://github.com/russelljjarvis/Odesa.jl-1/actions/workflows/ci.yml/badge.svg)](https://github.com/russelljjarvis/Odesa.jl-1/actions/workflows/ci.yml)
+
+
+By [yeshwanthravitheja](https://github.com/yeshwanthravitheja)
+
 
 <!---
 For this to work (direct to build status of this repository fork), you would need to fiddle around with manually setting up actions.
 
-![Build status](https://github.com/yeshwanthravitheja/julia_odesa/actions/workflows/ci.yml/badge.svg](https://github.com/yeshwanthravitheja/julia_odesa/actions/workflows/ci.yml/badge.svg)
+
+
 --->
 ![https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg](https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg)
 
