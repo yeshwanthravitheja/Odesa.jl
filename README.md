@@ -16,7 +16,6 @@
 
 
 
-![image](https://user-images.githubusercontent.com/7786645/228737546-f2547327-feed-43e8-ad3e-8d000cfd1b71.png)
 
 
 
@@ -42,6 +41,11 @@ Pkg.add(url="https://github.com/russelljjarvis/Odesa.jl-1")
 ```
 ![image](https://user-images.githubusercontent.com/7786645/228419246-be765377-5d9e-424a-ae5a-1ffe2722eae0.png)
 
+###
+
+Works fine with 16Bit Floats
+see image below.
+![image](https://user-images.githubusercontent.com/7786645/228737546-f2547327-feed-43e8-ad3e-8d000cfd1b71.png)
 
 
 ### Getting Started
