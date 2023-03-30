@@ -4,6 +4,8 @@ using CSV, Tables, DataFrames
 using Revise
 using Plots
 import Plots.plot
+using StatsBase
+
 df = CSV.read("times_for_yesh.csv",DataFrame)
 nodes = df.x1
 times = df.x2
@@ -24,14 +26,13 @@ times = times[perm]
 winners = []
 p1=plot(feast_layer.thresh)
 function collect_distances(feast_layer,nodes,times)
+    distances = feast_layer.dot_prod
+
     for i in 1:325
         Odesa.Feast.reset_time(feast_layer)
         for (y,ts) in zip(nodes,times)
             winner = Odesa.Feast.forward(feast_layer, Int16(1), Int16(y), Float16(ts))    
-            if i==324
-                distances = feast_layer.dot_prod
-                append!(winners,winner)
-            end
+            distances = feast_layer.dot_prod
             
         end
         display(plot!(p1,feast_layer.thresh,legend=false))
@@ -39,5 +40,5 @@ function collect_distances(feast_layer,nodes,times)
     distances
 end
 distances = collect_distances(feast_layer,nodes,times)
-
-#@assert 
+@assert length(distances) !=0
+@assert mean(distances) !=0
