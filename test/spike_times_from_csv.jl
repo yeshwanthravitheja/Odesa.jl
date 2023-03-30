@@ -10,9 +10,6 @@ feast_layer_tau::Float16 =  1.0/Int(round(sum(unique(times))/(pop_size*2)))#/2.0
 feast_layer_traceTau::Float16 = 0.81
 precision = 16
 
-convert_precision_float(x,precision) = eval("convert(x,Float{$precision})")
-convert_precision_Int(x,precision) = eval("convert(x,Int{$precision})")
-
 # Create a Feast layer with the above parameters
 feast_layer = Odesa.Feast.FC(precision,Int16(1),UInt16(pop_size*2),feast_layer_nNeurons,feast_layer_eta,feast_layer_threshEta,feast_layer_thresholdOpen,feast_layer_tau,feast_layer_traceTau)
 
