@@ -2,8 +2,6 @@
   Odesa.jl: Julia implementation of Feast/fully connected ODESA
 </h1>
 
-By [yeshwanthravitheja](https://github.com/yeshwanthravitheja)
-
 
 <p align="center">
   <a href="#Getting-Started">Getting Started</a> •
@@ -14,13 +12,19 @@ By [yeshwanthravitheja](https://github.com/yeshwanthravitheja)
   
 </p>
 
+[![CI](https://github.com/russelljjarvis/Odesa.jl-1/actions/workflows/ci.yml/badge.svg)](https://github.com/russelljjarvis/Odesa.jl-1/actions/workflows/ci.yml)
+
+
+
+
+
 
 <!---
 For this to work (direct to build status of this repository fork), you would need to fiddle around with manually setting up actions.
 
-![Build status](https://github.com/yeshwanthravitheja/julia_odesa/actions/workflows/ci.yml/badge.svg](https://github.com/yeshwanthravitheja/julia_odesa/actions/workflows/ci.yml/badge.svg)
+
+
 --->
-![https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg](https://github.com/russelljjarvis/Odesa.jl/actions/workflows/ci.yml/badge.svg)
 
 
 To Install
@@ -37,6 +41,11 @@ Pkg.add(url="https://github.com/russelljjarvis/Odesa.jl-1")
 ```
 ![image](https://user-images.githubusercontent.com/7786645/228419246-be765377-5d9e-424a-ae5a-1ffe2722eae0.png)
 
+###
+
+Works fine with 16Bit Floats (see image below).
+
+![image](https://user-images.githubusercontent.com/7786645/228737546-f2547327-feed-43e8-ad3e-8d000cfd1b71.png)
 
 
 ### Getting Started
