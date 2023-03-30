@@ -42,3 +42,50 @@ end
 distances = collect_distances(feast_layer,nodes,times)
 @assert length(distances) !=0
 @assert mean(distances) !=0
+function get_ts(nodes,times)
+    #num_spikes = length(nodes)
+    # The temporal resolution of the final timesurface
+    dt = 10
+    num_neurons = Int(length(unique(nodes)))+1#int(df.max(axis=0)['x1'])
+    total_time =  Int(maximum(times))
+    time_resolution = Int(round(total_time/dt))
+    # Final output. 
+    final_timesurf = zeros((num_neurons, time_resolution+1))
+    # Timestamp and membrane voltage store for generating time surface
+    timestamps = zeros((num_neurons)) .- Inf
+    mv = zeros((num_neurons))
+    tau = 200
+    last_t = 0
+    for (tt,nn) in zip(times,nodes)
+        #Get the current spike
+        neuron = Int(nn) 
+        time = Int(tt)        
+        # If time of the next spikes leaps over, make sure to generate 
+        # timesurfaces for all the intermediate dt time intervals and fill the 
+        # final_timesurface.
+        if time > last_t
+            timesurf = similar(final_timesurf[:,1])
+            for t in collect(last_t:dt:time)
+                @. timesurf = mv*exp((timestamps-t)/tau)
+                final_timesurf[:,1+Int(round(t/dt))] = timesurf
+            end
+            last_t = time
+        end
+        # Update the membrane voltage of the time surface based on the last value and time elapsed
+        mv[neuron] =mv[neuron]*exp((timestamps[neuron]-time)/tau) +1
+        timestamps[neuron] = time
+        # Update the latest timestamp at the channel. 
+    end
+    # Generate the time surface for the rest of the time if there exists no other spikes. 
+    timesurf = similar(final_timesurf[:,1])
+    for t in collect(last_t:dt:total_time)
+        @. timesurf = mv*exp((timestamps-t)/tau)
+        final_timesurf[:,1+Int(round(t/dt))] = timesurf
+    end
+    return final_timesurf
+
+end
+final_timesurf = get_ts(nodes,times);
+@show(sum(final_timesurf))
+display(Plots.heatmap(final_timesurf))
+@assert mean(final_timesurf) !=0
