@@ -4,16 +4,21 @@ using JLD2
 using Revise
 using LinearAlgebra
 
+
 # https://ieeexplore.ieee.org/document/9864144
 module Feast
+    using LinearAlgebra
+    import LinearAlgebra.norm
+    import LinearAlgebra.mul!
+
     abstract type FullyConnectedLayer end
 
     mutable struct FC{T,S,Q,R,P} <: FullyConnectedLayer
         #Layer input dimensions #TODO: This need not be stored. It is useless for FC
-        in_rows::Uint{P} # Int32
-        in_cols::Uint{P} #Int32
+        in_rows::P # Int32
+        in_cols::P #Int32
         # Flattened input dimensions
-        context_size::Uint{P} #$Int32
+        context_size::P #$Int32
         #Hyper Parameters for learning
         # Number of neurons in the layer
         nNeurons::T
@@ -28,7 +33,11 @@ module Feast
         # TIme constant used for keeping a trace of the layer
         traceTau::S
         # Weights of the neurons
-        w::Q # Matrix{Float32}
+
+        
+        w::R#Matrix{Float32}  ???
+
+
         #Threholds of the neurons
         thresh::Q
         # Delta stores the latest input context for which the neuron fired. 
@@ -49,7 +58,13 @@ module Feast
         # tempTrace is pre-allocated memory to populate with calculated trace of the neurons
         tempTrace::Q # Array{Float32,1}
         # Event context is pre-allocated memory to hold the event contexts
-        event_context:: R# Array{Float32,2}
+        
+        
+        
+        event_context::R #:: R# Array{Float32,2} ????
+
+
+
         # Dot Product is the pre-allocated memory to hold the dot products
         dot_prod:: Q# Array{Float32,1}
 
@@ -58,8 +73,8 @@ module Feast
         ##
 
 
-        convert_precision(x,precision<:Float) = eval("convert(x,Float{$precision})")
-        convert_precision(x,precision<:Int) = eval("convert(x,Int{$precision})")
+        #convert_precision(x,Int<:precision<:Real) = eval("convert(x,Float{$precision})")
+        #convert_precision(x,precision<:Int) = eval("convert(x,Int{$precision})")
         function FC(
             precision,
             input_rows,
@@ -74,22 +89,27 @@ module Feast
             #Flattened dimension size
             context_size = input_rows * input_cols 
             event_context =
-                zeros(Float32, input_rows, input_cols)::Array{typeof(eta),2}
-            w = rand(Float32, context_size, nNeurons)::Matrix{typeof(eta)}
+                zeros(typeof(eta), input_rows, input_cols)::Array{typeof(eta),2}
+            w = rand(typeof(eta), context_size, nNeurons)::Array{typeof(eta)}
             @inbounds for row in range(1, size(w, 2), step = 1)
                 w[:, row] = w[:, row] ./ norm(w[:, row])
             end
-            thresh = zeros(Float32, nNeurons)::Array{typeof(eta),1}
-            dot_prod = zeros(Float32, nNeurons)::Array{typeof(eta),1}
-            delta = zeros(Float32, context_size, nNeurons)::Array{typeof(eta),2}
-            deltaThresh = zeros(Float32, nNeurons)::Array{typeof(eta),1}
+            thresh = zeros(typeof(eta), nNeurons)::Array{typeof(eta),1}
+            dot_prod = zeros(typeof(eta), nNeurons)::Array{typeof(eta),1}
+            delta = zeros(typeof(eta), context_size, nNeurons)::Array{typeof(eta),2}
+            deltaThresh = zeros(typeof(eta), nNeurons)::Array{typeof(eta),1}
             timestamps = Array{typeof(eta),2}(undef, input_rows, input_cols)
             polarity  = Array{typeof(eta),2}(undef, input_rows, input_cols)
             winnerTrace = Array{typeof(eta),1}(undef, nNeurons)
-            winnerMV = zeros(Float32, nNeurons)::Array{typeof(eta),1}
-            tempTrace = zeros(Float32, nNeurons)::Array{typeof(eta),1}
-            noWinnerTrace = convert_precision(0.0,typeof(eta))
-            new{typeof(input_rows),typeof(eta),typeof(winnerMV),typeof(delta),typeof(precision)}(
+            #n#oWinnerTrace = convert_precision(0.0,typeof(eta))
+            #noWinnerTrace = Float32(0.0)
+            winnerMV = zeros(typeof(eta), nNeurons)::Array{typeof(eta),1}
+            tempTrace = zeros(typeof(eta), nNeurons)::Array{typeof(eta),1}
+
+            noWinnerTrace = convert(typeof(eta),0.0)  #convert_precision(0.0,)
+
+
+            new{typeof(input_rows),typeof(eta),Vector,typeof(delta),typeof(precision)}(
                 
                 input_rows,
                 input_cols,
@@ -131,12 +151,12 @@ module Feast
         fill!(layer.polarity, zero(eltype(layer.polarity))) 
         fill!(layer.winnerTrace, typemin(eltype(layer.winnerTrace)))
         fill!(layer.winnerMV, zero(eltype(layer.winnerTrace)))
-        layer.noWinnerTrace = typemin(Float32)
+        layer.noWinnerTrace = zero(eltype(layer.winnerTrace)) #typemin(Float32)
         return nothing
 
     end
 
-    function add_event(layer::FC, x::Int32, y, ts)
+    function add_event(layer::FC, x, y, ts)
         """
         Adds the input event to the timestamp store. Polarity is set to whatever is the decayed value at that
         channel until time ts, and then added 1 to it. 
@@ -197,7 +217,7 @@ module Feast
         return nothing
     end
 
-    function reward(layer::FC, neuron<:Real)
+    function reward(layer::FC, neuron::Real)
         """
         Reward individual neuron 
         """
@@ -213,11 +233,11 @@ module Feast
         layer_w_n .= layer_w_n ./ norm(layer_w_n)
 
         # Updated threshold value based on Thresh = Thresh + η*ΔThresh
-        updatedThresh::Float32 = layer.thresh[neuron] +
+        updatedThresh = layer.thresh[neuron] +
             layer.threshEta * layer.deltaThresh[neuron]
             
         # If updated threshold is less than 0, then set it to 0. (There is no point of negative thresholds)
-        updatedThresh = updatedThresh < 0.0 ? zero(Float32) : updatedThresh
+        updatedThresh = updatedThresh < 0.0 ? zero(typeof(updatedThresh)) : updatedThresh
         layer.thresh[neuron] = updatedThresh
 
         return nothing
@@ -291,9 +311,7 @@ module Feast
 
             punish(layer)
 
-        end
-
-        
+        end        
         return winnerNeuron
 
     end
