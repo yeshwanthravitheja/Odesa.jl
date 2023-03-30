@@ -5,6 +5,7 @@ using Revise
 using Plots
 import Plots.plot
 using StatsBase
+using Test
 
 df = CSV.read("times_for_yesh.csv",DataFrame)
 nodes = df.x1
